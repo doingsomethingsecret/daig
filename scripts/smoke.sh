@@ -2,10 +2,10 @@
 # Verifies every tier answers. Used locally and in CI.
 set -euo pipefail
 
-WEB=${WEB:-http://localhost:8080}
-ORDERS=${ORDERS:-http://localhost:3001}
-KITCHEN=${KITCHEN:-http://localhost:3002}
-DISPATCH=${DISPATCH:-http://localhost:3003}
+WEB=${WEB:-http://localhost:18080}
+ORDERS=${ORDERS:-http://localhost:13001}
+KITCHEN=${KITCHEN:-http://localhost:13002}
+DISPATCH=${DISPATCH:-http://localhost:13003}
 
 fail=0
 

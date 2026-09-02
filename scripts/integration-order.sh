@@ -4,7 +4,7 @@
 # actually talk to each other, rather than just that they each boot.
 set -euo pipefail
 
-ORDERS=${ORDERS:-http://localhost:3001}
+ORDERS=${ORDERS:-http://localhost:13001}
 
 echo "waiting for reference data..."
 for i in $(seq 1 30); do
