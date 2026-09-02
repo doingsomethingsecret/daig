@@ -1,0 +1,83 @@
+docker build --target broken -f services/orders/Dockerfile -t tkxel/daig-orders:broken .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  1.364MB
+Step 1/26 : FROM node:22-alpine AS deps
+ ---> c610fcdfb1d5
+Step 2/26 : WORKDIR /app
+ ---> Using cache
+ ---> 797971a11798
+Step 3/26 : COPY services/orders/package.json services/orders/package-lock.json ./services/orders/
+ ---> Using cache
+ ---> 0cf914127033
+Step 4/26 : COPY services/_shared/package.json services/_shared/package-lock.json ./services/_shared/
+ ---> Using cache
+ ---> 18458481a7e0
+Step 5/26 : WORKDIR /app/services/orders
+ ---> Using cache
+ ---> ac987191d5c2
+Step 6/26 : RUN npm ci --omit=dev --no-audit --no-fund
+ ---> Using cache
+ ---> a60f5380d6dd
+Step 7/26 : WORKDIR /app/services/_shared
+ ---> Using cache
+ ---> 1b002e45aece
+Step 8/26 : RUN npm ci --omit=dev --no-audit --no-fund
+ ---> Using cache
+ ---> 049793a8bf0d
+Step 9/26 : FROM node:22-alpine AS base
+ ---> c610fcdfb1d5
+Step 10/26 : ENV NODE_ENV=production
+ ---> Using cache
+ ---> 015132961342
+Step 11/26 : WORKDIR /app
+ ---> Using cache
+ ---> 6df2147ca7e9
+Step 12/26 : RUN addgroup -S daig && adduser -S daig -G daig
+ ---> Using cache
+ ---> 14adfcba9966
+Step 13/26 : COPY --from=deps /app/services/orders/node_modules  ./services/orders/node_modules
+ ---> Using cache
+ ---> b75226fc0150
+Step 14/26 : COPY --from=deps /app/services/_shared/node_modules ./services/_shared/node_modules
+ ---> Using cache
+ ---> dcb8c8904027
+Step 15/26 : COPY services/_shared ./services/_shared
+ ---> Using cache
+ ---> 14171c0a1576
+Step 16/26 : COPY services/orders  ./services/orders
+ ---> Using cache
+ ---> 97427ddc1106
+Step 17/26 : USER daig
+ ---> Using cache
+ ---> 52add088b179
+Step 18/26 : EXPOSE 3001
+ ---> Using cache
+ ---> d03798492b58
+Step 19/26 : HEALTHCHECK --interval=15s --timeout=3s --start-period=10s --retries=3   CMD node -e "require('http').get('http://127.0.0.1:3001/healthz',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+ ---> Using cache
+ ---> 82daba569e47
+Step 20/26 : WORKDIR /app/services/orders
+ ---> Using cache
+ ---> e7676eabaf10
+Step 21/26 : CMD ["node", "src/index.js"]
+ ---> Using cache
+ ---> 01dbc4ac1508
+Step 22/26 : FROM base AS runtime
+ ---> 01dbc4ac1508
+Step 23/26 : ENV DATABASE_URL=postgresql://daig:CHANGE_ME_DEV_ONLY@postgres:5432/daig
+ ---> Using cache
+ ---> 3e07758e6e4a
+Step 24/26 : FROM base AS broken
+ ---> 01dbc4ac1508
+Step 25/26 : LABEL org.opencontainers.image.description="Deliberately misconfigured. Teaching artifact - never deploy."
+ ---> Using cache
+ ---> cbef6e84cdc2
+Step 26/26 : LABEL dev.tkxel.teaching-defect="missing DATABASE_URL, exits 78"
+ ---> Using cache
+ ---> 2648c68ee136
+Successfully built 2648c68ee136
+Successfully tagged tkxel/daig-orders:broken
+now run: docker run --rm tkxel/daig-orders:broken

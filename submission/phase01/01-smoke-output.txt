@@ -1,0 +1,16 @@
+./scripts/smoke.sh
+TIER 1 - presentation
+  web /healthz                 OK (200)
+  web serves index             OK (200)
+TIER 2 - application
+  orders /healthz              OK (200)
+  orders /readyz               OK (200)
+  orders /metrics              OK (200)
+  kitchen /healthz             OK (200)
+  kitchen /readyz              OK (200)
+  dispatch /healthz            OK (200)
+  dispatch /readyz             OK (200)
+TIER 3 - data (reached through readiness probes above)
+  orders sees database         OK (200)
+
+all tiers healthy

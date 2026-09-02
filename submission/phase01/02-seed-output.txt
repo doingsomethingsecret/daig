@@ -1,0 +1,14 @@
+./scripts/seed.sh
+seeding menu items...
+INSERT 0 0
+   restaurant    | items 
+-----------------+-------
+ Bundu Khan      |     8
+ Butt Karahi     |     8
+ Cafe Aylanto    |     8
+ Kolachi         |     8
+ Sadaf Fish      |     8
+ Student Biryani |     8
+(6 rows)
+
+seed complete

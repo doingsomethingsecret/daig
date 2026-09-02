@@ -1,0 +1,6 @@
+waiting for reference data...
+restaurant: a2195c66-ab28-4455-b182-62631b30ac38
+menu item:  b6ca1edf-1163-4d5b-8edb-68fc19845b36
+response:   {"order_id":"7c78ba8f-07dd-43bc-847c-2cb57497161b","total_paisa":240000,"downstream":{"ok":true,"status":200}}
+final state: ASSIGNED
+PASS - order traversed orders -> kitchen -> dispatch

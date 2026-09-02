@@ -1,0 +1,6 @@
+$ docker run --rm tkxel/daig-orders:broken
+{"level":"info","msg":"telemetry started","service":"orders","endpoint":"http://otel-collector:4318"}
+{"level":"fatal","service":"secrets","time":"2026-09-02T11:56:36.997Z","msg":"No secret store configured while NODE_ENV=production","exit_code":78,"remedy":"Configure OpenBao (BAO_ADDR/BAO_ROLE_ID/BAO_SECRET_ID), or deliver secrets as *_FILE Docker/Swarm secrets. See vault/README.md."}
+
+$ echo $?
+78

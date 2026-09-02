@@ -1,0 +1,106 @@
+$ docker compose ps
+NAME              IMAGE                COMMAND                  SERVICE    CREATED          STATUS                    PORTS
+daig-dispatch-1   daig-dispatch        "docker-entrypoint.s…"   dispatch   29 minutes ago   Up 29 minutes (healthy)   0.0.0.0:13003->3003/tcp, [::]:13003->3003/tcp
+daig-kitchen-1    daig-kitchen         "docker-entrypoint.s…"   kitchen    29 minutes ago   Up 29 minutes (healthy)   0.0.0.0:13002->3002/tcp, [::]:13002->3002/tcp
+daig-orders-1     daig-orders          "docker-entrypoint.s…"   orders     29 minutes ago   Up 29 minutes (healthy)   0.0.0.0:13001->3001/tcp, [::]:13001->3001/tcp
+daig-postgres-1   postgres:16-alpine   "docker-entrypoint.s…"   postgres   29 minutes ago   Up 29 minutes (healthy)   0.0.0.0:5430->5432/tcp, [::]:5430->5432/tcp
+daig-redis-1      redis:7-alpine       "docker-entrypoint.s…"   redis      29 minutes ago   Up 29 minutes (healthy)   0.0.0.0:6380->6379/tcp, [::]:6380->6379/tcp
+daig-web-1        daig-web             "/docker-entrypoint.…"   web        29 minutes ago   Up 29 minutes (healthy)   0.0.0.0:18080->8080/tcp, [::]:18080->8080/tcp
+
+$ curl -i http://localhost:18080/healthz
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     28 100     28   0      0  51094      0                              0100     28 100     28   0      0  48951      0                              0100     28 100     28   0      0  46589      0                              0
+HTTP/1.1 200 OK
+Server: nginx/1.31.4
+Date: Wed, 02 Sep 2026 10:49:33 GMT
+Content-Type: application/octet-stream
+Content-Length: 28
+Connection: keep-alive
+
+{"ok":true,"service":"web"}
+
+$ curl -i http://localhost:13001/healthz
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     30 100     30   0      0  26041      0                              0100     30 100     30   0      0  25531      0                              0100     30 100     30   0      0  25041      0                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 30
+ETag: W/"1e-4vSWHOaSm37rG5fCoSQLJva/0pY"
+Date: Wed, 02 Sep 2026 10:49:33 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"ok":true,"service":"orders"}
+$ curl -i http://localhost:13001/readyz
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     58 100     58   0      0   6387      0                              0100     58 100     58   0      0   6370      0                              0100     58 100     58   0      0   6356      0                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 58
+ETag: W/"3a-pI8sTGj9RtIRznr4JWy2V97DLrk"
+Date: Wed, 02 Sep 2026 10:49:33 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"ok":true,"service":"orders","credentials":"environment"}
+$ curl -i http://localhost:13002/healthz
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     31 100     31   0      0  25389      0                              0100     31 100     31   0      0  24939      0                              0100     31 100     31   0      0  24505      0                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 31
+ETag: W/"1f-sNnuBdUYnHA0KhE9EqRDPqulK9M"
+Date: Wed, 02 Sep 2026 10:49:33 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"ok":true,"service":"kitchen"}
+$ curl -i http://localhost:13002/readyz
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     31 100     31   0      0   1816      0                              0100     31 100     31   0      0   1813      0                              0100     31 100     31   0      0   1810      0                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 31
+ETag: W/"1f-sNnuBdUYnHA0KhE9EqRDPqulK9M"
+Date: Wed, 02 Sep 2026 10:49:33 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"ok":true,"service":"kitchen"}
+$ curl -i http://localhost:13003/healthz
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     32 100     32   0      0  24096      0                              0100     32 100     32   0      0  23529      0                              0100     32 100     32   0      0  23088      0                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 32
+ETag: W/"20-YjbbDBF5pHjPQX1zPblrTVidSoo"
+Date: Wed, 02 Sep 2026 10:49:33 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"ok":true,"service":"dispatch"}
+$ curl -i http://localhost:13003/readyz
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              0100     32 100     32   0      0   3677      0                              0100     32 100     32   0      0   3665      0                              0100     32 100     32   0      0   3655      0                              0
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 32
+ETag: W/"20-YjbbDBF5pHjPQX1zPblrTVidSoo"
+Date: Wed, 02 Sep 2026 10:49:33 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
+{"ok":true,"service":"dispatch"}

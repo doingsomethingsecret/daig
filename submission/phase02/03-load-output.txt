@@ -1,0 +1,4 @@
+node load/iftar-spike.js
+target http://localhost:3001, profile "curve"
+/api/restaurants -> 500
+make: *** [Makefile:51: load] Error 1

@@ -1,0 +1,22 @@
+node load/iftar-spike.js
+target http://localhost:13001, profile "curve"
+catalog: 6 restaurants
+
+step 1/12 - 2 orders/s ... 30/30 accepted
+step 2/12 - 3 orders/s ... 45/45 accepted
+step 3/12 - 2 orders/s ... 30/30 accepted
+step 4/12 - 3 orders/s ... 45/45 accepted
+step 5/12 - 4 orders/s ... 60/60 accepted
+step 6/12 - 8 orders/s ... 120/120 accepted
+step 7/12 - 22 orders/s ... 330/330 accepted
+step 8/12 - 60 orders/s ... 667/900 accepted
+step 9/12 - 120 orders/s ... 651/1800 accepted
+step 10/12 - 45 orders/s ... 654/675 accepted
+step 11/12 - 14 orders/s ... 210/210 accepted
+step 12/12 - 6 orders/s ... 90/90 accepted
+
+[total] sent=4335 ok=2932 shed=0 failed=1403 p50=5002ms p95=5310ms p99=5387ms
+
+error rate 32.36%  (SLO allows 0.10%)
+You just burned error budget. That is the exercise.
+make: *** [Makefile:51: load] Error 1
