@@ -24,6 +24,7 @@ plan.json
 *.tfvars
 !*.tfvars.example
 crash.log
+infra/aws/.terraform/
 
 # --- build output ---
 dist/
