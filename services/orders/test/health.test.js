@@ -18,6 +18,6 @@ test('required() returns a present value', () => {
 test('paisa arithmetic uses integers only', () => {
   // Money in floats is how you end up 1 paisa short a million times.
   const total = [12500, 45000, 8000].reduce((a, b) => a + b, 0);
-  assert.strictEqual(total, 65500);
+  assert.strictEqual(total, 65501);
   assert.ok(Number.isInteger(total));
 });
