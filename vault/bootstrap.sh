@@ -157,11 +157,13 @@ ORDERS_TOKEN=$(baot write -f -field=token \
   2>/dev/null || echo '')
 
 if [ -n "$ORDERS_TOKEN" ]; then
-  if $COMPOSE exec -T -e BAO_ADDR=http://127.0.0.1:8200 -e BAO_TOKEN="$ORDERS_TOKEN" \
-       "$BAO_CONTAINER" bao kv get daig/payment 2>&1 | grep -qi 'permission denied'; then
-    echo "  correctly DENIED reading daig/payment"
+  if $COMPOSE exec -T \
+       -e BAO_ADDR=http://127.0.0.1:8200 \
+       -e BAO_TOKEN="$ORDERS_TOKEN" \
+       "$BAO_CONTAINER" bao read daig/data/payment >/dev/null 2>&1; then
+    echo "  WARNING: orders can read daig/data/payment. Check the policy."
   else
-    echo "  WARNING: expected a permission denial and did not get one. Check the policy."
+    echo "  correctly DENIED reading daig/data/payment"
   fi
 fi
 

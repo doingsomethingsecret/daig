@@ -39,19 +39,15 @@ function mountInsecureRoutes(app, deps) {
   app.get('/insecure/search', async (req, res) => {
     const term = req.query.q || '';
     try {
-      const sql = `SELECT id, name, area FROM restaurants WHERE name LIKE '%${term}%'`;
-      log.warn({ sql }, 'VULN-1 executing concatenated SQL');
-      const { rows } = await q('vuln_search', sql);
-      res.json({ results: rows, executed_sql: sql });
+      const { rows } = await q(
+        'search',
+        'SELECT id, name, area FROM restaurants WHERE name ILIKE $1',
+        [`%${term}%`]
+      );
+      res.json({ results: rows });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-
-    // FIXED VERSION:
-    // const { rows } = await q('search',
-    //   'SELECT id, name, area FROM restaurants WHERE name ILIKE $1',
-    //   [`%${term}%`]);
-    // res.json({ results: rows });
   });
 
   // --------------------------------------------------------------------------
@@ -89,18 +85,13 @@ function mountInsecureRoutes(app, deps) {
     try {
       await q('vuln_boom', 'SELECT * FROM table_that_does_not_exist');
     } catch (err) {
+      const ref = crypto.randomUUID();
+      log.error({ err: err.message, stack: err.stack, ref }, 'query failed');
       res.status(500).json({
-        error: err.message,
-        stack: err.stack,
-        database: process.env.DATABASE_URL,   // catastrophic
-        node: process.version
+        error: 'internal error',
+        reference: ref
       });
     }
-
-    // FIXED VERSION: log the detail, return an opaque reference.
-    // const ref = crypto.randomUUID();
-    // log.error({ err: err.message, stack: err.stack, ref }, 'query failed');
-    // res.status(500).json({ error: 'internal error', reference: ref });
   });
 
   // --------------------------------------------------------------------------
@@ -112,12 +103,20 @@ function mountInsecureRoutes(app, deps) {
   app.post('/insecure/register', (req, res) => {
     const { username, password } = req.body || {};
     if (!username || !password) return res.status(400).json({ error: 'both required' });
-    const hash = crypto.createHash('md5').update(password).digest('hex');
-    res.json({ username, password_hash: hash, algorithm: 'md5' });
 
-    // FIXED VERSION: argon2id, or bcrypt/scrypt with a sensible cost.
-    // The point of a password hash is to be SLOW.
-    // const hash = await argon2.hash(password, { type: argon2.argon2id });
+    const salt = crypto.randomBytes(16);
+    const hash = crypto.scryptSync(password, salt, 64, {
+      N: 16384,
+      r: 8,
+      p: 1
+    });
+
+    res.json({
+      username,
+      password_hash: hash.toString('hex'),
+      salt: salt.toString('hex'),
+      algorithm: 'scrypt'
+    });
   });
 
   // --------------------------------------------------------------------------

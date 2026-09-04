@@ -21,7 +21,7 @@ ORDERS=${ORDERS:-http://localhost:3001}
 case "$ACTION" in
   break)
     echo "[sec] enabling INSECURE_MODE on orders..."
-    CHAOS_ENV=INSECURE_MODE=true docker compose up -d --force-recreate --no-deps orders
+    INSECURE_MODE=true docker compose up -d --force-recreate --no-deps orders
     cat <<'EOF'
 
 [sec] Six vulnerabilities are now live on /insecure/*. Your job:

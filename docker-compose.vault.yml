@@ -16,6 +16,7 @@ services:
   openbao:
     image: openbao/openbao:2.0.0
     command: ["server", "-config=/openbao/config/config.hcl"]
+    entrypoint: ["bao"]
     cap_add: [IPC_LOCK]        # stops secrets being swapped to disk
     environment:
       BAO_ADDR: http://127.0.0.1:8200
@@ -24,7 +25,6 @@ services:
       - ./vault/config:/openbao/config:ro
       - baodata:/openbao/data
       - baologs:/openbao/logs
-    ports: ["8200:8200"]
     healthcheck:
       # 501 = initialised but sealed, 503 = sealed. Both mean the process is up.
       # Treating "sealed" as unhealthy would restart-loop a vault that is simply
