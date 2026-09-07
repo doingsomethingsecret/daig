@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+.envrc
+.direnv/
 vault/.init-keys.json
 vault/.approle/
 *.pem
@@ -17,6 +19,7 @@ node_modules/
 # --- terraform ---
 .terraform/
 .terraform.lock.hcl
+.terraform.d/
 *.tfstate
 *.tfstate.*
 *.tfplan
@@ -45,6 +48,8 @@ gitleaks.json
 logs/
 pids/
 *.pid
+kind-p7-logs/
+text.txt
 
 # --- editors and OS ---
 .DS_Store
@@ -55,8 +60,15 @@ Thumbs.db
 *.swp
 *~
 
+# --- kubernetes / kind ---
+kind-*.yaml
+kubectl
+
 # --- python ---
 __pycache__/
 *.py[cod]
 .venv/
 venv/
+
+# --- submission artifacts ---
+submission/phase07/
